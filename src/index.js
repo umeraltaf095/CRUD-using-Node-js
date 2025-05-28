@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import userRoutes from "./routes/userRoutes.js";
+import loginRoutes from "./routes/loginRoutes.js";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ mongoose
 
 // Routes
 app.use("/", userRoutes);
+app.use('/login', loginRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello from Express and MongoDB!");
