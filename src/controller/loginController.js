@@ -17,7 +17,7 @@ const loginForm = async (req, res) => {
     if (!loginInfo) {
       return res.status(404).json({ message: "Wrong Email or Password" });
     }
-    //  res.json({message:"User logged-in successfully"});
+
     const token = jwt.sign({ email: loginInfo.email }, secretKey, {
       expiresIn: "1h",
     });
