@@ -21,7 +21,7 @@ const loginForm = async (req, res) => {
     const token = jwt.sign({ email: loginInfo.email }, secretKey, {
       expiresIn: "1h",
     });
-    return res.json({ message: "User logged in successfully", token: token });
+    return res.json({ message: "Admin logged in successfully", token: token });
   } catch (error) {
     res.status(500).json({ message: "Error occured", error: error.message });
   }

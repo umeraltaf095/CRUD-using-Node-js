@@ -4,6 +4,6 @@ import loginForm from '../controller/loginController.js';
 const router = express.Router();
 
 
-router.post('/user', loginForm);
+router.post('/admin', loginForm);
 
 export default router ;

@@ -3,7 +3,14 @@ import userModel from "../model/userModel.js";
 const userData = {
   addUser: async (req, res) => {
     try {
+      
+      console.log(req.file);
+      
       const { name, email } = req.body;
+      const file = req.file?.path;
+   
+      
+      
       if (!name || !email) {
         return res.json({ message: "name or email fields cannot be empty" });
       } else {
@@ -11,20 +18,31 @@ const userData = {
         if (existingemail) {
           return res.json({ message: "Email already exist" });
         }
-        await userModel.create({ name, email });
+        await userModel.create({ name, email , file });
         return res.json({ message: "User added successfully" });
       }
-    } catch (error) {
-      res.status(500).send("Error Ocuured");
+    } catch (err) {
+      res.json({error: err.message});
     }
   },
 
   getUser: async (req, res) => {
     try {
-      const data = await userModel.find();
-      return res.json(data);
-    } catch {
-      res.status(500).send("error");
+      
+       const name = req.query.name;
+       const email = req.query.email;
+       let conditions = [];
+       if(name) conditions.push({name: {$regex: name , $options: "i"} });
+       if(email) conditions.push({ email: {$regex: email , $options: "i"} });
+       const filteredData = await userModel.find(
+        conditions.length ? {$and : conditions} : {}
+       )
+       console.log(filteredData);
+       
+       return res.json(filteredData);
+       
+    } catch(err) {
+      res.json({error: err.message});
     }
   },
   deleteUser: async (req, res) => {
@@ -36,8 +54,8 @@ const userData = {
       }
       await userModel.deleteOne({ _id: userId });
       return res.json({ message: "User deleted successfully" });
-    } catch {
-      res.json({ error: " Error occured" });
+    } catch(err) {
+      res.json({ error: err.message });
     }
   },
   editUser: async (req, res) => {
@@ -50,8 +68,8 @@ const userData = {
       }
       await userModel.findOneAndUpdate({ _id: userId }, updateData);
       return res.json({ message: "User updated successfully" });
-    } catch {
-      res.json({ error: "Error occured" });
+    } catch(err) {
+      res.json({ error: err.message });
     }
   },
 };

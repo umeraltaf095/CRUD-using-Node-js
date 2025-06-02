@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import multer from 'multer';
 
 const userSchema = new mongoose.Schema({
     name:{
@@ -10,9 +11,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    password:{
-    type: String,
-}
+   file: {
+    type: String
+   }
+    
 })
 
 const userModel = mongoose.model('userModel', userSchema);
